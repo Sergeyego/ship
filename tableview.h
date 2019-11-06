@@ -4,11 +4,11 @@
 #include <QWidget>
 #include <QTableView>
 #include <QHeaderView>
-#include <xlslib.h>
 #include <QDir>
 #include <QFileDialog>
+#include "xlsx/xlsxdocument.h"
 
-using namespace xlslib_core;
+using namespace QXlsx;
 
 class TableView : public QTableView
 {
@@ -19,7 +19,7 @@ public:
 
 public slots:
     void resizeToContents();
-    void save(QString fnam);
+    void save(QString fnam, int dec=-1);
 };
 
 #endif // TABLEVIEW_H

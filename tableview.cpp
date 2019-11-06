@@ -37,88 +37,96 @@ void TableView::resizeToContents()
     }
 }
 
-void TableView::save(QString fnam)
+void TableView::save(QString fnam, int dec)
 {
     int rows,cols;
-    int i,j;
     rows=this->model()->rowCount();
     cols=this->model()->columnCount();
 
     if (rows*cols>1){
-        workbook wb;
-        worksheet *sh = wb.sheet("sheet");
-        cell_t *cref;
+        Document xlsx;
+        Worksheet *ws=xlsx.currentWorksheet();
 
-        QString hCubeell;
+        QFont defaultFont("Arial", 10);
+        QFont titleFont("Arial", 10);
+        titleFont.setBold(true);
+        Format strFormat;
+        strFormat.setBorderStyle(Format::BorderThin);
+        strFormat.setFont(defaultFont);
+        Format numFormat;
+        numFormat.setBorderStyle(Format::BorderThin);
+        numFormat.setFont(defaultFont);
 
-        //sh->merge(0,0,0,cols);
-        sh->label(0,0,fnam.toStdWString());
-        cref=sh->FindCellOrMakeBlank(0,0);
-        cref->fontbold(BOLDNESS_DOUBLE);
-        //cref->halign(HALIGN_CENTER);
-        sh->rowheight(0,300);
+        Format headerFormat=strFormat;
+        headerFormat.setFont(titleFont);
 
-        sh->rowheight(1,(this->horizontalHeader()->sizeHint().height())*30);
+        Format titleFormat;
+        titleFormat.setFont(titleFont);
 
-        sh->colwidth(0,(this->verticalHeader()->sizeHint().width())*38);
+        ws->writeString(CellReference("A1"),fnam,titleFormat);
 
-        sh->FindCellOrMakeBlank(1,0)->borderstyle(BORDER_LEFT, BORDER_HAIR);
-        sh->FindCellOrMakeBlank(1,0)->borderstyle(BORDER_RIGHT, BORDER_HAIR);
-        sh->FindCellOrMakeBlank(1,0)->borderstyle(BORDER_TOP, BORDER_HAIR);
-        sh->FindCellOrMakeBlank(1,0)->borderstyle(BORDER_BOTTOM, BORDER_HAIR);
-
-        for(i=0;i<cols;i++){
-            hCubeell=this->model()->headerData(i,Qt::Horizontal).toString();
-            hCubeell.replace(QChar('\n'),QChar('\n'));
-            sh->label(1,i+1,hCubeell.toStdWString());
-            cref=sh->FindCellOrMakeBlank(1,i+1);
-
-            cref->borderstyle(BORDER_LEFT, BORDER_HAIR);
-            cref->borderstyle(BORDER_RIGHT, BORDER_HAIR);
-            cref->borderstyle(BORDER_TOP, BORDER_HAIR);
-            cref->borderstyle(BORDER_BOTTOM, BORDER_HAIR);
-
-            cref->fontbold(BOLDNESS_DOUBLE);
-            cref->halign(HALIGN_JUSTIFY);
-            sh->colwidth(i+1,(this->columnWidth(i)*38));
-        }
-
-        for(j=0;j<rows;j++){
-            sh->label(j+2,0,this->model()->headerData(j,Qt::Vertical).toString().toStdWString());
-            cref=sh->FindCellOrMakeBlank(j+2,0);
-            cref->borderstyle(BORDER_LEFT, BORDER_HAIR);
-            cref->borderstyle(BORDER_RIGHT, BORDER_HAIR);
-            cref->borderstyle(BORDER_TOP, BORDER_HAIR);
-            cref->borderstyle(BORDER_BOTTOM, BORDER_HAIR);
-            cref->halign(HALIGN_LEFT);
-        }
-
-        for (i=0;i<rows;i++)
-            for(j=0;j<cols;j++){
-                int role=Qt::EditRole;
-                QVariant value=this->model()->data(this->model()->index(i,j),role);
-                if ((value.typeName()==QString("double"))||value.typeName()==QString("int")){
-                    sh->number(i+2,j+1,value.toDouble());
-                } else {
-                    value=this->model()->data(this->model()->index(i,j),Qt::DisplayRole).toString();
-                    sh->label(i+2,j+1,value.toString().toStdWString());
-                }
-                sh->FindCellOrMakeBlank(i+2,j+1)->borderstyle(BORDER_LEFT, BORDER_HAIR);
-                sh->FindCellOrMakeBlank(i+2,j+1)->borderstyle(BORDER_RIGHT, BORDER_HAIR);
-                sh->FindCellOrMakeBlank(i+2,j+1)->borderstyle(BORDER_TOP, BORDER_HAIR);
-                sh->FindCellOrMakeBlank(i+2,j+1)->borderstyle(BORDER_BOTTOM, BORDER_HAIR);
+        int m=2;
+        ws->setRowHeight(2,2,this->verticalHeader()->height()/14.0);
+        for(int i=0;i<cols;i++) {
+            if (!this->isColumnHidden(i)) {
+                QString hCubeell=this->model()->headerData(i,Qt::Horizontal).toString();
+                hCubeell.replace(QChar('\n'),QChar('\n'));
+                ws->writeString(2,m,hCubeell,headerFormat);
+                ws->setColumnWidth(m,m,this->columnWidth(i)/7.0);
+                m++;
             }
+        }
 
-        QDir dir(QDir::homePath()+"/provreport");
-        if (!dir.exists()) dir.mkdir(dir.path());
-        QString filename = QFileDialog::getSaveFileName(this,tr("Сохранить документ"),
-                                                        dir.path()+"/"+fnam+".xls",
-                                                        tr("Documents (*.xls)") );
+        if (!this->verticalHeader()->isHidden()){
+            m=3;
+            ws->setColumnWidth(1,1,this->verticalHeader()->width()/7.0);
+            ws->writeBlank(2,1,strFormat);
+            for(int j=0;j<rows;j++) {
+                if (!this->isRowHidden(j)) {
+                    QString hCubeell=this->model()->headerData(j,Qt::Vertical).toString();
+                    hCubeell.replace(QChar('\n'),QChar('\n'));
+                    ws->writeString(m,1,hCubeell,strFormat);
+                    m++;
+                }
+            }
+        }
+
+        for (int i=0;i<rows;i++){
+            m=2;
+            for(int j=0;j<cols;j++){
+                if (!this->isColumnHidden(i)) {
+                    int role=Qt::EditRole;
+                    QVariant value=this->model()->data(this->model()->index(i,j),role);
+                    int d=(value.typeName()==QString("int"))? 0 : dec;
+                    if (d<0){
+                        d=3;
+                    }
+                    if ((value.typeName()==QString("double"))||value.typeName()==QString("int")){
+                        if (d>=1){
+                            QString fmt=QString("0.%1").arg((0),d,'d',0,QChar('0'));
+                            numFormat.setNumberFormat(fmt);
+                        } else {
+                            numFormat.setNumberFormat("0");
+                        }
+                        if (!model()->data(this->model()->index(i,j),Qt::DisplayRole).toString().isEmpty()){
+                            ws->writeNumeric(i+3,m,value.toDouble(),numFormat);
+                        } else {
+                            ws->writeBlank(i+3,m,numFormat);
+                        }
+                    } else {
+                        ws->writeString(i+3,m,value.toString(),strFormat);
+                    }
+                    m++;
+                }
+            }
+        }
+
+        QDir dir(QDir::homePath());
+        QString filename = QFileDialog::getSaveFileName(nullptr,QString::fromUtf8("Сохранить документ"),
+                                                        dir.path()+"/"+fnam+".xlsx",
+                                                        QString::fromUtf8("Documents (*.xlsx)") );
         if (!filename.isEmpty()){
-            QFile file(filename);
-            if (file.exists()) file.remove();
-            std::string fil(filename.toLocal8Bit());
-            wb.Dump(fil);
+            xlsx.saveAs(filename);
         }
     }
 }

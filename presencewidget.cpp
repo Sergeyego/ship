@@ -29,6 +29,6 @@ void PresenceWidget::upd()
 
 void PresenceWidget::save()
 {
-    ui->tableView->save(tr("Наличие проволоки на ")+ui->dateEdit->date().toString("dd.MM.yy"));
+    ui->tableView->save(tr("Наличие проволоки на ")+ui->dateEdit->date().toString("dd.MM.yy"),1);
 }
 

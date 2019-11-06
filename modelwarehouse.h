@@ -15,10 +15,12 @@ public:
 public slots:
     void refresh();
     void setNotZero(bool val);
+    void setCurYear(bool val);
     QVariant data(const QModelIndex &item, int role=Qt::DisplayRole) const;
     void setDate(QDate d);
 private:
     bool notZero;
+    bool curYear;
     QDate date;
     
 signals:

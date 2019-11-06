@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>798</width>
+    <width>926</width>
     <height>598</height>
    </rect>
   </property>
@@ -48,12 +48,22 @@
           </widget>
          </item>
          <item>
+          <widget class="QCheckBox" name="checkBoxYear">
+           <property name="text">
+            <string>Тек. год</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
           <widget class="QCheckBox" name="checkBoxNZ">
            <property name="text">
             <string>Только не 0</string>
            </property>
            <property name="checked">
-            <bool>true</bool>
+            <bool>false</bool>
            </property>
           </widget>
          </item>

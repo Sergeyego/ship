@@ -22,7 +22,7 @@ FormPresenceEl::~FormPresenceEl()
 
 void FormPresenceEl::saveXls()
 {
-    ui->tableView->save(tr("Наличие электродов на ")+ui->dateEdit->date().toString("dd.MM.yy"));
+    ui->tableView->save(tr("Наличие электродов на ")+ui->dateEdit->date().toString("dd.MM.yy"),1);
 }
 
 void FormPresenceEl::updModel()

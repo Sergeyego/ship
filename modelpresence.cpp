@@ -11,7 +11,7 @@ void ModelPresence::refresh(QDate date, bool bypart)
     this->clear();
     by_Part=bypart;
     if(by_Part){
-        setQuery("select pr.nam, d.sdim, k.nam, m.n_s, date_part('year',m.dat), s.nam, c.st from wire_parti p "
+        setQuery("select pr.nam, d.sdim, k.nam, m.n_s, cast(date_part('year',m.dat) as integer), s.nam, c.st from wire_parti p "
                  "inner join wire_parti_m as m on p.id_m=m.id "
                  "inner join provol pr on pr.id=m.id_provol "
                  "inner join (select cs.id_wparti, cs.st from wire_calc_stock('"+date.toString("yyyy.MM.dd")+"') cs) c on c.id_wparti=p.id "
@@ -167,7 +167,7 @@ void ModelPresenceEl::refresh(QDate date, bool by_part)
     bypart=by_part;
     QSqlQuery query;
     if (bypart){
-        query.prepare("select e.marka, p.diam, p.n_s, cast(date_part('year',p.dat_part) as varchar(4)), i.nam, n.nam, c.kvo "
+        query.prepare("select e.marka, p.diam, p.n_s, cast(date_part('year',p.dat_part) as integer), i.nam, n.nam, c.kvo "
                       "from calc_parti_new(:dat) as c "
                       "inner join parti as p on c.id_part=p.id "
                       "inner join elrtr as e on p.id_el=e.id "

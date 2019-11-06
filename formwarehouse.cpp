@@ -39,6 +39,7 @@ FormWarehouse::FormWarehouse(QWidget *parent) :
 
     connect(ui->cmdUpd,SIGNAL(clicked()),modelWar,SLOT(refresh()));
     connect(ui->checkBoxNZ,SIGNAL(toggled(bool)),modelWar,SLOT(setNotZero(bool)));
+    connect(ui->checkBoxYear,SIGNAL(toggled(bool)),modelWar,SLOT(setCurYear(bool)));
     connect(ui->tableViewPart->selectionModel(),SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),this,SLOT(updData(QModelIndex)));
     connect(ui->dateEdit,SIGNAL(dateChanged(QDate)),modelWar,SLOT(setDate(QDate)));
 }

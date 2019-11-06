@@ -6,12 +6,24 @@
 ModelWarehouse::ModelWarehouse(QObject *parent) :
     QSqlQueryModel(parent)
 {
-    notZero=true;
+    notZero=false;
+    curYear=true;
 }
 
 void ModelWarehouse::refresh()
 {
-    QString nz= notZero? "where s.st<>0 " : "";
+    QString flt;
+    if (notZero){
+        flt+="s.st<>0 ";
+    }
+    if (curYear){
+        if (!flt.isEmpty()) flt+="and ";
+        QDate d(QDate::currentDate().year(),1,1);
+        flt+="m.dat >= '"+d.toString("yyyy-MM-dd")+"' ";
+    }
+    if (!flt.isEmpty()){
+        flt="where "+flt;
+    }
     QString dat=date.toString("yyyy-MM-dd");
     setQuery("select s.id_wparti, m.n_s ||'-'|| date_part('year',m.dat), pr.nam, d.sdim, pk.short, s.st as sklad "
              "from wire_calc_stock('"+dat+"') as s "
@@ -20,7 +32,7 @@ void ModelWarehouse::refresh()
              "inner join provol as pr on m.id_provol=pr.id "
              "inner join diam as d on m.id_diam=d.id "
              "inner join wire_pack_kind as pk on p.id_pack=pk.id "+
-             nz+"order by p.iyear, p.n_s");
+             flt+"order by m.dat, m.n_s");
     if (lastError().isValid()){
         QMessageBox::critical(NULL,"Error",lastError().text(),QMessageBox::Cancel);
     } else {
@@ -35,6 +47,13 @@ void ModelWarehouse::refresh()
 void ModelWarehouse::setNotZero(bool val)
 {
     notZero=val;
+    refresh();
+}
+
+void ModelWarehouse::setCurYear(bool val)
+{
+    curYear=val;
+    refresh();
 }
 
 QVariant ModelWarehouse::data(const QModelIndex &item, int role) const
