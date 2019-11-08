@@ -11,7 +11,12 @@ int main(int argc, char *argv[])
     DbLogin d(QObject::tr("Отгрузка продукции"),logo);
     if (d.exec()!=QDialog::Accepted) exit(1);
 
-    MainWindow w(false);
+    QString key;
+    if (argc>1){
+        key=QString(argv[1]);
+    }
+
+    MainWindow w(key=="ro");
     w.show();
 
     return a.exec();

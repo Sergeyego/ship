@@ -47,6 +47,8 @@ FormRet::FormRet(bool readonly, QWidget *parent) :
     if (readonly){
         ui->tableViewCont->setEditTriggers(QAbstractItemView::NoEditTriggers);
         push->setEnabled(false);
+        ui->tableViewNakl->setMenuEnabled(false);
+        ui->tableViewCont->setMenuEnabled(false);
     }
 
     connect(ui->cmdUpd,SIGNAL(clicked(bool)),this,SLOT(refreshNakl()));

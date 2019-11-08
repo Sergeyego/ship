@@ -63,6 +63,9 @@ FormShip::FormShip(bool readonly, QWidget *parent) :
         ui->tableViewWire->setEditTriggers(QAbstractItemView::NoEditTriggers);
         push->setEnabled(false);
         ui->cmd1c->setEnabled(false);
+        ui->tableViewShip->setMenuEnabled(false);
+        ui->tableViewEl->setMenuEnabled(false);
+        ui->tableViewWire->setMenuEnabled(false);
     }
 
     connect(ui->cmdUpdShip,SIGNAL(clicked(bool)),this,SLOT(updPol()));

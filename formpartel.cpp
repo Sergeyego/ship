@@ -39,6 +39,7 @@ FormPartEl::FormPartEl(bool readonly, QWidget *parent) :
     if (readonly){
         ui->tableViewOst->setEditTriggers(QAbstractItemView::NoEditTriggers);
         ui->checkBoxFini->setEnabled(false);
+        ui->cmdCalc->setEnabled(false);
     }
 
     connect(ui->cmdUpd,SIGNAL(clicked(bool)),this,SLOT(updPart()));
