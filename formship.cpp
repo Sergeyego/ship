@@ -146,7 +146,7 @@ void FormShip::goXml()
     const int id_pol = modelShip->data(modelShip->index(ui->tableViewShip->currentIndex().row(),3),Qt::EditRole).toInt();
     int i=1;
     QString namPol, codPol, inn;
-#if defined(Q_WS_WIN)
+#if defined(Q_OS_WIN)
     QDir dir("C:/rotex");
 #else
     QDir dir(QDir::homePath()+"/xml");
