@@ -45,7 +45,13 @@ SOURCES += main.cpp\
     db/dblogin.cpp \
     db/dbmapper.cpp \
     db/dbtablemodel.cpp \
-    db/dbviewer.cpp
+    db/dbviewer.cpp \
+    formreport.cpp \
+    executor.cpp \
+    modelreport.cpp \
+    progressreportdialog.cpp \
+    tablemodel.cpp \
+    dialogrest.cpp
 
 HEADERS  += mainwindow.h \
     model.h \
@@ -66,7 +72,13 @@ HEADERS  += mainwindow.h \
     db/dblogin.h \
     db/dbmapper.h \
     db/dbtablemodel.h \
-    db/dbviewer.h
+    db/dbviewer.h \
+    formreport.h \
+    executor.h \
+    modelreport.h \
+    progressreportdialog.h \
+    tablemodel.h \
+    dialogrest.h
 
 FORMS    += mainwindow.ui \
     dialogcods.ui \
@@ -76,7 +88,10 @@ FORMS    += mainwindow.ui \
     formwarehouse.ui \
     presencewidget.ui \
     formpresenceel.ui \
-    db/dblogin.ui
+    db/dblogin.ui \
+    formreport.ui \
+    progressreportdialog.ui \
+    dialogrest.ui
 
 RESOURCES += \
     res.qrc

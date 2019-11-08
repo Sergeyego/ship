@@ -15,6 +15,7 @@ MainWindow::MainWindow(bool readonly, QWidget *parent) :
     formPartWire = new FormWarehouse();
     formPresWire = new PresenceWidget();
     formPresEl = new FormPresenceEl();
+    formReport = new FormReport();
 
     tabWidget->addTabAction(formShip,ui->actionShip);
     tabWidget->addTabAction(formRet,ui->actionRet);
@@ -22,6 +23,7 @@ MainWindow::MainWindow(bool readonly, QWidget *parent) :
     tabWidget->addTabAction(formPartWire,ui->actionPartWire);
     tabWidget->addTabAction(formPresWire,ui->actionAvWire);
     tabWidget->addTabAction(formPresEl,ui->actionAvEl);
+    tabWidget->addTabAction(formReport,ui->actionReportEl);
 
     tabWidget->loadSettings();
 
@@ -39,6 +41,7 @@ MainWindow::~MainWindow()
     delete formPartWire;
     delete formPresWire;
     delete formPresEl;
+    delete formReport;
     delete ui;
 }
 

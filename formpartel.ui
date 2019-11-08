@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>868</width>
-    <height>631</height>
+    <width>866</width>
+    <height>629</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -73,6 +73,13 @@
       <widget class="QPushButton" name="cmdUpd">
        <property name="text">
         <string>Обновить</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="cmdCalc">
+       <property name="text">
+        <string>Пересчитать остатки</string>
        </property>
       </widget>
      </item>

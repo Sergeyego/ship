@@ -6,6 +6,7 @@ FormPartEl::FormPartEl(bool readonly, QWidget *parent) :
     ui(new Ui::FormPartEl)
 {
     ui->setupUi(this);
+    modelRest = new ModelRest(this);
     loadSettings();
     ui->dateEdit->setDate(QDate::currentDate());
     modelPartEl = new ModelPartEl(this);
@@ -43,6 +44,7 @@ FormPartEl::FormPartEl(bool readonly, QWidget *parent) :
     connect(ui->cmdUpd,SIGNAL(clicked(bool)),this,SLOT(updPart()));
     connect(ui->checkBoxEl,SIGNAL(clicked(bool)),ui->comboBoxEl,SLOT(setEnabled(bool)));
     connect(ui->tableViewPart->selectionModel(),SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),this,SLOT(updInfo(QModelIndex)));
+    connect(ui->cmdCalc,SIGNAL(clicked(bool)),this,SLOT(calcOst()));
 }
 
 FormPartEl::~FormPartEl()
@@ -88,4 +90,13 @@ void FormPartEl::updInfo(QModelIndex index)
     modelPartElOst->refresh(id_part);
     ui->tableViewOst->setColumnHidden(0,true);
     ui->tableViewOst->resizeToContents();
+}
+
+void FormPartEl::calcOst()
+{
+    DialogRest d;
+    if (d.exec()==QDialog::Accepted){
+        modelRest->setDate(d.getDate());
+        modelRest->run();
+    }
 }

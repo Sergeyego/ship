@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>998</width>
-    <height>698</height>
+    <width>996</width>
+    <height>696</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -243,13 +243,13 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>DbViewer</class>
-   <extends>QTableView</extends>
+   <class>DateEdit</class>
+   <extends>QDateEdit</extends>
    <header>db/dbviewer.h</header>
   </customwidget>
   <customwidget>
-   <class>DateEdit</class>
-   <extends>QDateEdit</extends>
+   <class>DbViewer</class>
+   <extends>QTableView</extends>
    <header>db/dbviewer.h</header>
   </customwidget>
  </customwidgets>

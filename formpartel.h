@@ -4,6 +4,8 @@
 #include <QWidget>
 #include "modelreadonly.h"
 #include "models.h"
+#include "dialogrest.h"
+#include "modelreport.h"
 #include <QDataWidgetMapper>
 
 namespace Ui {
@@ -26,12 +28,14 @@ private:
     ModelPartElPost *modelPartElPost;
     ModelPartElShip *modelPartElShip;
     ModelPartElOst *modelPartElOst;
+    ModelRest *modelRest;
     void loadSettings();
     void saveSettings();
 
 private slots:
     void updPart();
     void updInfo(QModelIndex index);
+    void calcOst();
 };
 
 #endif // FORMPARTEL_H

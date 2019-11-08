@@ -3,6 +3,8 @@
 TableView::TableView(QWidget *parent) : QTableView(parent)
 {
     verticalHeader()->setDefaultSectionSize(verticalHeader()->fontMetrics().height()*1.5);
+    //verticalHeader()->setFixedWidth(verticalHeader()->fontMetrics().height()*1.2);
+    verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
 }
 
 void TableView::resizeToContents()
@@ -24,7 +26,12 @@ void TableView::resizeToContents()
     }*/
     for (int i=0; i<n; i++){
         s=model()->headerData(i,Qt::Horizontal).toString();
-        max=horizontalHeader()->fontMetrics().width(s);
+        l=s.split("\n");
+        max=0;
+        for (int k=0; k<l.size(); k++){
+            if (max<fontMetrics().width(l.at(k)))
+                max=fontMetrics().width(l.at(k));
+        }
         for (int j=0; j<m; j++){
             s=model()->data(model()->index(j,i)).toString();
             l=s.split("\n");

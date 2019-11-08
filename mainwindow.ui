@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1000</width>
-    <height>700</height>
+    <width>998</width>
+    <height>698</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -21,8 +21,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1000</width>
-     <height>20</height>
+     <width>998</width>
+     <height>24</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu">
@@ -47,9 +47,16 @@
     <addaction name="actionPartEl"/>
     <addaction name="actionPartWire"/>
    </widget>
+   <widget class="QMenu" name="menu_4">
+    <property name="title">
+     <string>Отчеты</string>
+    </property>
+    <addaction name="actionReportEl"/>
+   </widget>
    <addaction name="menu"/>
    <addaction name="menu_2"/>
    <addaction name="menu_3"/>
+   <addaction name="menu_4"/>
   </widget>
   <action name="actionShip">
    <property name="checkable">
@@ -105,6 +112,14 @@
    </property>
    <property name="text">
     <string>Наличие проволоки</string>
+   </property>
+  </action>
+  <action name="actionReportEl">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Отчет по электродам</string>
    </property>
   </action>
  </widget>

@@ -9,6 +9,7 @@
 #include "formwarehouse.h"
 #include "presencewidget.h"
 #include "formpresenceel.h"
+#include "formreport.h"
 
 namespace Ui {
 class MainWindow;
@@ -31,6 +32,7 @@ private:
     FormWarehouse *formPartWire;
     PresenceWidget *formPresWire;
     FormPresenceEl *formPresEl;
+    FormReport *formReport;
     void loadSettings();
     void saveSettings();
 
