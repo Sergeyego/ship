@@ -48,6 +48,7 @@ public slots:
     void slotWrite();
     void slotEsc();
     void first();
+    void last();
     void setCurrentViewRow(int row);
 
 private slots:

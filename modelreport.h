@@ -48,7 +48,7 @@ public slots:
 private:
     QDate begDate;
     QDate endDate;
-    QStringList headerList;    
+    QStringList headerList;
 };
 
 class ModelRest : public ModelPrg
@@ -59,6 +59,21 @@ class ModelRest : public ModelPrg
      virtual void refresh();
      void setDate(QDate d);
  private:
+     QDate date;
+};
+
+class ModelPresenceEl : public ModelPrg
+{    Q_OBJECT
+ public:
+     explicit ModelPresenceEl(QObject *parent = 0);
+ public slots:
+     virtual void refresh();
+     void setDate(QDate d);
+     void setByPart(bool b);
+     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+ private:
+     bool bypart;
+     bool currentByPart;
      QDate date;
 };
 

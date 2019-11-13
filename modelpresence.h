@@ -23,17 +23,4 @@ signals:
     
 };
 
-class ModelPresenceEl : public QSqlQueryModel
-{    Q_OBJECT
- public:
-      explicit ModelPresenceEl(QObject *parent = 0);
-      QVariant data(const QModelIndex &item, int role=Qt::DisplayRole) const;
-      int rowCount(const QModelIndex &parent) const;
- public slots:
-      void refresh(QDate date, bool by_part);
- private:
-      bool bypart;
-      double sum;
-};
-
 #endif // MODELPRESENCE_H

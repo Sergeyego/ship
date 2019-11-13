@@ -66,9 +66,13 @@ void TableView::save(QString fnam, int dec)
 
         Format headerFormat=strFormat;
         headerFormat.setFont(titleFont);
+        headerFormat.setTextWarp(true);
+        headerFormat.setHorizontalAlignment(Format::AlignHCenter);
+        headerFormat.setVerticalAlignment(Format::AlignVCenter);
 
         Format titleFormat;
         titleFormat.setFont(titleFont);
+
 
         ws->writeString(CellReference("A1"),fnam,titleFormat);
 

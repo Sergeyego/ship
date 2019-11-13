@@ -28,6 +28,8 @@ private:
 private slots:
     void refreshNakl();
     void setCurrentNakl(int index);
+    void loadsettings();
+    void savesettings();
 
 public slots:
     void setPartFilter();

@@ -6,9 +6,21 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>398</width>
-    <height>106</height>
+    <width>443</width>
+    <height>122</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>443</width>
+    <height>122</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>443</width>
+    <height>122</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>Пересчитать остатки</string>
@@ -58,6 +70,19 @@
       </size>
      </property>
     </spacer>
+   </item>
+   <item>
+    <widget class="QLabel" name="label_2">
+     <property name="font">
+      <font>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Если вы не уверены в том, что делаете, нажмите кнопку отмена!</string>
+     </property>
+    </widget>
    </item>
    <item>
     <widget class="QDialogButtonBox" name="buttonBox">

@@ -42,10 +42,18 @@ FormPartEl::FormPartEl(bool readonly, QWidget *parent) :
         ui->cmdCalc->setEnabled(false);
     }
 
-    connect(ui->cmdUpd,SIGNAL(clicked(bool)),this,SLOT(updPart()));
+    setParams();
+
+    connect(ui->cmdUpd,SIGNAL(clicked(bool)),modelPartEl,SLOT(run()));
+    connect(modelPartEl,SIGNAL(finished()),this,SLOT(updPart()));
     connect(ui->checkBoxEl,SIGNAL(clicked(bool)),ui->comboBoxEl,SLOT(setEnabled(bool)));
     connect(ui->tableViewPart->selectionModel(),SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),this,SLOT(updInfo(QModelIndex)));
     connect(ui->cmdCalc,SIGNAL(clicked(bool)),this,SLOT(calcOst()));
+    connect(ui->dateEdit,SIGNAL(dateChanged(QDate)),this,SLOT(setParams()));
+    connect(ui->checkBoxNotN,SIGNAL(toggled(bool)),this,SLOT(setParams()));
+    connect(ui->checkBoxCyrYear,SIGNAL(toggled(bool)),this,SLOT(setParams()));
+    connect(ui->checkBoxEl,SIGNAL(toggled(bool)),this,SLOT(setParams()));
+    connect(ui->comboBoxEl,SIGNAL(currentIndexChanged(int)),this,SLOT(setParams()));
 }
 
 FormPartEl::~FormPartEl()
@@ -68,11 +76,11 @@ void FormPartEl::saveSettings()
 
 void FormPartEl::updPart()
 {
-    int id_el=-1;
+    /*int id_el=-1;
     if (ui->checkBoxEl->isChecked() && !ui->comboBoxEl->currentText().isEmpty()){
         id_el=ui->comboBoxEl->model()->data(ui->comboBoxEl->model()->index(ui->comboBoxEl->currentIndex(),0),Qt::EditRole).toInt();
     }
-    modelPartEl->refresh(ui->dateEdit->date(), ui->checkBoxNotN->isChecked(), ui->checkBoxCyrYear->isChecked(),id_el);
+    modelPartEl->refresh(ui->dateEdit->date(), ui->checkBoxNotN->isChecked(), ui->checkBoxCyrYear->isChecked(),id_el);*/
     ui->tableViewPart->setColumnHidden(0,true);
     ui->tableViewPart->resizeToContents();
     ui->tableViewPart->selectRow(0);
@@ -100,4 +108,13 @@ void FormPartEl::calcOst()
         modelRest->setDate(d.getDate());
         modelRest->run();
     }
+}
+
+void FormPartEl::setParams()
+{
+    int id_el=-1;
+    if (ui->checkBoxEl->isChecked() && !ui->comboBoxEl->currentText().isEmpty()){
+        id_el=ui->comboBoxEl->model()->data(ui->comboBoxEl->model()->index(ui->comboBoxEl->currentIndex(),0),Qt::EditRole).toInt();
+    }
+    modelPartEl->setParams(ui->dateEdit->date(), ui->checkBoxNotN->isChecked(), ui->checkBoxCyrYear->isChecked(),id_el);
 }

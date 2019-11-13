@@ -29,6 +29,7 @@ private:
 
 private slots:
     void updData(QModelIndex index);
+    void updPartiFinished();
 
 };
 

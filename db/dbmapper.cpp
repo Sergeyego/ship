@@ -37,7 +37,7 @@ DbMapper::DbMapper(QAbstractItemView *v, QWidget *parent) :
 
     DbTableModel *sqlModel = qobject_cast<DbTableModel *>(mapper->model());
     if (sqlModel){
-        connect(sqlModel,SIGNAL(sigRefresh()),this,SLOT(first()));
+        connect(sqlModel,SIGNAL(sigRefresh()),this,SLOT(last()));
         connect(sqlModel,SIGNAL(sigRefresh()),this,SLOT(checkEmpty()));
     }
 
@@ -228,4 +228,10 @@ void DbMapper::first()
 {
     mapper->toFirst();
     setCurrentViewRow(0);
+}
+
+void DbMapper::last()
+{
+    mapper->toLast();
+    setCurrentViewRow(mapper->model()->rowCount()-1);
 }

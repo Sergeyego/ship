@@ -25,19 +25,13 @@ FormWarehouse::FormWarehouse(QWidget *parent) :
 
     modelWar=new ModelWarehouse(this);
     modelWar->setDate(ui->dateEdit->date());
-    modelWar->refresh();
+
     proxyModel = new QSortFilterProxyModel(this);
     proxyModel->setSourceModel(modelWar);
-    ui->tableViewPart->verticalHeader()->setDefaultSectionSize(ui->tableViewPart->verticalHeader()->fontMetrics().height()*1.5);
     ui->tableViewPart->setModel(proxyModel);
-    ui->tableViewPart->setColumnHidden(0,true);
-    ui->tableViewPart->setColumnWidth(1,80);
-    ui->tableViewPart->setColumnWidth(2,150);
-    ui->tableViewPart->setColumnWidth(3,50);
-    ui->tableViewPart->setColumnWidth(4,80);
-    ui->tableViewPart->setColumnWidth(5,90);
 
     connect(ui->cmdUpd,SIGNAL(clicked()),modelWar,SLOT(refresh()));
+    connect(modelWar,SIGNAL(sigRefresh()),this,SLOT(updPartiFinished()));
     connect(ui->checkBoxNZ,SIGNAL(toggled(bool)),modelWar,SLOT(setNotZero(bool)));
     connect(ui->checkBoxYear,SIGNAL(toggled(bool)),modelWar,SLOT(setCurYear(bool)));
     connect(ui->tableViewPart->selectionModel(),SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),this,SLOT(updData(QModelIndex)));
@@ -72,4 +66,14 @@ void FormWarehouse::updData(QModelIndex index)
     ui->tableViewInCex->resizeColumnsToContents();
     ui->tableViewStock->resizeColumnsToContents();
     ui->tableViewShip->resizeColumnsToContents();
+}
+
+void FormWarehouse::updPartiFinished()
+{
+    ui->tableViewPart->setColumnHidden(0,true);
+    ui->tableViewPart->setColumnWidth(1,80);
+    ui->tableViewPart->setColumnWidth(2,150);
+    ui->tableViewPart->setColumnWidth(3,50);
+    ui->tableViewPart->setColumnWidth(4,80);
+    ui->tableViewPart->setColumnWidth(5,90);
 }

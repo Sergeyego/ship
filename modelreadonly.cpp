@@ -1,11 +1,20 @@
 #include "modelreadonly.h"
 
-ModelPartEl::ModelPartEl(QObject *parent) : QSqlQueryModel(parent)
+ModelPartEl::ModelPartEl(QObject *parent) : ModelPrg(parent)
 {
 
 }
 
-void ModelPartEl::refresh(QDate date, bool nn, bool cy, int id_el)
+void ModelPartEl::setParams(QDate d, bool n, bool y, int id)
+{
+    date=d;
+    nn=n;
+    cy=y;
+    id_el=id;
+}
+
+
+void ModelPartEl::refresh()
 {
     QString flt;
     if (nn) flt+="c.kvo<>0 ";
@@ -18,42 +27,35 @@ void ModelPartEl::refresh(QDate date, bool nn, bool cy, int id_el)
         flt+="p.id_el = "+QString::number(id_el)+" ";
     }
     if (!flt.isEmpty()) flt="where "+flt;
-    QSqlQuery query;
-    query.prepare("select p.id, p.n_s||'-'||date_part('year',p.dat_part) as part, e.marka, p.diam, i.nam, c.kvo "
-                  "from calc_parti_new(:date) as c "
-                  "inner join parti as p on c.id_part=p.id "
-                  "inner join elrtr as e on p.id_el=e.id "
-                  "inner join istoch as i on p.id_ist=i.id "
-                  +flt+"order by p.n_s, p.dat_part");
-    query.bindValue(":date",date);
-    if (!query.exec()){
-        QMessageBox::critical(NULL,tr("Ошибка"),query.lastError().text(),QMessageBox::Ok);
-    } else {
-        this->setQuery(query);
-        this->setHeaderData(1,Qt::Horizontal,tr("Партия"));
-        this->setHeaderData(2,Qt::Horizontal,tr("Марка"));
-        this->setHeaderData(3,Qt::Horizontal,tr("Ф"));
-        this->setHeaderData(4,Qt::Horizontal,tr("Источник"));
-        this->setHeaderData(5,Qt::Horizontal,tr("Наличие, кг"));
-    }
+    QString query;
+    query=("select p.id, p.n_s||'-'||date_part('year',p.dat_part) as part, e.marka, p.diam, i.nam, c.kvo "
+           "from calc_parti_new('"+date.toString("yyyy-MM-dd")+"') as c "
+           "inner join parti as p on c.id_part=p.id "
+           "inner join elrtr as e on p.id_el=e.id "
+           "inner join istoch as i on p.id_ist=i.id "
+           +flt+"order by p.n_s, p.dat_part");
+    loadData(query);
 }
 
 QVariant ModelPartEl::data(const QModelIndex &item, int role) const
 {
     if (role==Qt::BackgroundColorRole){
-        double val=QSqlQueryModel::data(index(item.row(),5),Qt::EditRole).toDouble();
+        double val=ModelPrg::data(index(item.row(),5),Qt::EditRole).toDouble();
         if (val<0.0) return QVariant(QColor(255,170,170));
         if (val>0.0) return QVariant(QColor(170,255,170));
     }
-    if (item.column()==3 || item.column()==5){
-        if (role==Qt::DisplayRole){
-            int dec = item.column()==3 ? 1 : 2;
-            return QLocale().toString(QSqlQueryModel::data(item,Qt::EditRole).toDouble(),'f',dec);
-        } else if (role==Qt::TextAlignmentRole){
-            return int(Qt::AlignRight | Qt::AlignVCenter);
-        }
+    return ModelPrg::data(item,role);
+}
+
+QVariant ModelPartEl::headerData(int section, Qt::Orientation orientation, int role) const
+{
+    QStringList headers;
+    headers<<tr("id")<<tr("Партия")<<tr("Марка")<<tr("ф")<<tr("Источник")<<tr("Наличие, кг");
+
+    if (orientation == Qt::Horizontal && (role == Qt::DisplayRole || role == Qt::EditRole)) {
+        return (headers.size()>section && section>=0)? headers.at(section) : ModelPrg::headerData(section, orientation, role);
     }
-    return QSqlQueryModel::data(item,role);
+    return ModelPrg::headerData(section, orientation, role);
 }
 
 ModelPartElInfo::ModelPartElInfo(QObject *parent) : QSqlQueryModel(parent)

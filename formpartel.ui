@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>866</width>
-    <height>629</height>
+    <width>909</width>
+    <height>625</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -77,14 +77,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="cmdCalc">
-       <property name="text">
-        <string>Пересчитать остатки</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <spacer name="horizontalSpacer">
+      <spacer name="horizontalSpacer_2">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
@@ -96,6 +89,13 @@
        </property>
       </spacer>
      </item>
+     <item>
+      <widget class="QPushButton" name="cmdCalc">
+       <property name="text">
+        <string>Пересчитать остатки</string>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
    <item>
@@ -104,6 +104,9 @@
       <enum>Qt::Horizontal</enum>
      </property>
      <widget class="TableView" name="tableViewPart">
+      <property name="editTriggers">
+       <set>QAbstractItemView::NoEditTriggers</set>
+      </property>
       <property name="selectionMode">
        <enum>QAbstractItemView::SingleSelection</enum>
       </property>

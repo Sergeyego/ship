@@ -24,7 +24,7 @@ private:
     QDate date;
     
 signals:
-    
+    void sigRefresh();
 public slots:
     
 };

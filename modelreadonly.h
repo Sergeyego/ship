@@ -8,15 +8,22 @@
 #include <QMessageBox>
 #include <QDate>
 #include <QLocale>
-#include "db/dbtablemodel.h"
+#include "modelreport.h"
 
-class ModelPartEl : public QSqlQueryModel
+class ModelPartEl : public ModelPrg
 {
     Q_OBJECT
 public:
     ModelPartEl(QObject *parent=0);
-    void refresh(QDate date, bool nn, bool cy, int id_el);
-    QVariant data(const QModelIndex &item, int role=Qt::DisplayRole) const;
+    virtual void refresh();
+    void setParams(QDate date, bool nn, bool cy, int id_el);
+    QVariant data(const QModelIndex &index, int role) const;
+    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+private:
+    QDate date;
+    bool nn;
+    bool cy;
+    int id_el;
 };
 
 class ModelPartElInfo : public QSqlQueryModel

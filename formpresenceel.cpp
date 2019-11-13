@@ -10,8 +10,13 @@ FormPresenceEl::FormPresenceEl(QWidget *parent) :
     ui->cmdUpd->setIcon(QIcon(QApplication::style()->standardIcon(QStyle::SP_BrowserReload)));
     ui->cmdSave->setIcon(QIcon(QApplication::style()->standardIcon(QStyle::SP_DialogSaveButton)));
     modelPresEl = new ModelPresenceEl(this);
+    modelPresEl->setDate(ui->dateEdit->date());
+    modelPresEl->setByPart(ui->radioButtonPart->isChecked());
     ui->tableView->setModel(modelPresEl);
-    connect(ui->cmdUpd,SIGNAL(clicked(bool)),this,SLOT(updModel()));
+    connect(ui->dateEdit,SIGNAL(dateChanged(QDate)),modelPresEl,SLOT(setDate(QDate)));
+    connect(ui->radioButtonPart,SIGNAL(toggled(bool)),modelPresEl,SLOT(setByPart(bool)));
+    connect(ui->cmdUpd,SIGNAL(clicked(bool)),modelPresEl,SLOT(run()));
+    connect(modelPresEl,SIGNAL(finished()),ui->tableView,SLOT(resizeToContents()));
     connect(ui->cmdSave,SIGNAL(clicked(bool)),this,SLOT(saveXls()));
 }
 
@@ -23,10 +28,4 @@ FormPresenceEl::~FormPresenceEl()
 void FormPresenceEl::saveXls()
 {
     ui->tableView->save(tr("Наличие электродов на ")+ui->dateEdit->date().toString("dd.MM.yy"),1);
-}
-
-void FormPresenceEl::updModel()
-{
-    modelPresEl->refresh(ui->dateEdit->date(),ui->radioButtonPart->isChecked());
-    ui->tableView->resizeToContents();
 }

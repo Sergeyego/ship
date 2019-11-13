@@ -42,6 +42,7 @@ void ModelWarehouse::refresh()
         setHeaderData(4, Qt::Horizontal,tr("Намотка"));
         setHeaderData(5, Qt::Horizontal,tr("Наличие, кг"));
     }
+    emit sigRefresh();
 }
 
 void ModelWarehouse::setNotZero(bool val)

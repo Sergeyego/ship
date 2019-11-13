@@ -36,6 +36,7 @@ private slots:
     void updPart();
     void updInfo(QModelIndex index);
     void calcOst();
+    void setParams();
 };
 
 #endif // FORMPARTEL_H

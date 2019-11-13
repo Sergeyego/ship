@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include "modelpresence.h"
+#include "modelreport.h"
 
 namespace Ui {
 class FormPresenceEl;
@@ -22,7 +23,6 @@ private:
 
 private slots:
     void saveXls();
-    void updModel();
 };
 
 #endif // FORMPRESENCEEL_H

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>851</width>
-    <height>603</height>
+    <width>849</width>
+    <height>601</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -77,7 +77,11 @@
     </layout>
    </item>
    <item>
-    <widget class="TableView" name="tableView"/>
+    <widget class="TableView" name="tableView">
+     <property name="editTriggers">
+      <set>QAbstractItemView::NoEditTriggers</set>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>

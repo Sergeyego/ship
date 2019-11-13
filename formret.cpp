@@ -6,6 +6,8 @@ FormRet::FormRet(bool readonly, QWidget *parent) :
     ui(new Ui::FormRet)
 {
     ui->setupUi(this);
+    loadsettings();
+
     ui->cmdUpd->setIcon(QIcon(QApplication::style()->standardIcon(QStyle::SP_BrowserReload)));
     ui->cmdUpdPart->setIcon(QIcon(QApplication::style()->standardIcon(QStyle::SP_BrowserReload)));
     ui->dateEditBeg->setDate(QDate::currentDate().addDays(-QDate::currentDate().dayOfYear()+1));
@@ -64,6 +66,7 @@ FormRet::FormRet(bool readonly, QWidget *parent) :
 
 FormRet::~FormRet()
 {
+    savesettings();
     delete ui;
 }
 
@@ -77,6 +80,18 @@ void FormRet::setCurrentNakl(int index)
 {
     int id_nakl=ui->tableViewNakl->model()->data(ui->tableViewNakl->model()->index(index,0),Qt::EditRole).toInt();
     modelNaklCont->refresh(id_nakl);
+}
+
+void FormRet::loadsettings()
+{
+    QSettings settings("szsm", "ship");
+    ui->splitter->restoreState(settings.value("ret_splitter_width").toByteArray());
+}
+
+void FormRet::savesettings()
+{
+    QSettings settings("szsm", "ship");
+    settings.setValue("ret_splitter_width",ui->splitter->saveState());
 }
 
 void FormRet::setPartFilter()
