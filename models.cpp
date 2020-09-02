@@ -21,11 +21,13 @@ Models::Models(QObject *parent) :
     relEl = new DbRelation(new DbRelationalModel("select id, marka from elrtr order by marka",this),0,1,this);
 
     relPol = new DbRelation(new DbRelationalModel("select id, short ||' "+tr("ИНН")+ " '|| COALESCE(substring(innkpp from '\\m\\d*'),'-') from poluch order by short",this),0,1,this);
+    relShipType = new DbRelation(new DbRelationalModel("select id, nam from sert_type order by nam",this),0,1,this);
 
     rels.push_back(relWirePart);
     rels.push_back(relElPart);
     rels.push_back(relEl);
     rels.push_back(relPol);
+    rels.push_back(relShipType);
     relElPart->proxyModel()->setFilterKeyColumn(2);
     relWirePart->proxyModel()->setFilterKeyColumn(2);
     setFilter(1);

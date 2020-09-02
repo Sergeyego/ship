@@ -161,9 +161,10 @@ ModelPartElShip::ModelPartElShip(QObject *parent)  : QSqlQueryModel(parent)
 void ModelPartElShip::refresh(int id_part)
 {
     QSqlQuery query;
-    query.prepare("select s.nom_s, s.dat_vid, p.short, o.massa "
+    query.prepare("select s.nom_s, s.dat_vid, p.short, t.nam, o.massa "
                   "from otpusk o inner join sertifikat s on o.id_sert=s.id "
                   "inner join poluch p on s.id_pol=p.id "
+                  "inner join sert_type t on s.id_type=t.id "
                   "where o.id_part = :id "
                   "order by s.dat_vid");
     query.bindValue(":id",id_part);
@@ -174,7 +175,8 @@ void ModelPartElShip::refresh(int id_part)
         this->setHeaderData(0,Qt::Horizontal,tr("Номер"));
         this->setHeaderData(1,Qt::Horizontal,tr("Дата"));
         this->setHeaderData(2,Qt::Horizontal,tr("Получатель"));
-        this->setHeaderData(3,Qt::Horizontal,tr("Масса, кг"));
+        this->setHeaderData(3,Qt::Horizontal,tr("Тип отгрузки"));
+        this->setHeaderData(4,Qt::Horizontal,tr("Масса, кг"));
     }
 }
 
@@ -182,10 +184,10 @@ QVariant ModelPartElShip::data(const QModelIndex &item, int role) const
 {
     if (role==Qt::DisplayRole){
         if (item.column()==1) return QSqlQueryModel::data(item,Qt::EditRole).toDate().toString("dd.MM.yy");
-        if (item.column()==3) return QLocale().toString(QSqlQueryModel::data(item,Qt::EditRole).toDouble(),'f',2);
+        if (item.column()==4) return QLocale().toString(QSqlQueryModel::data(item,Qt::EditRole).toDouble(),'f',2);
     }
     if (role==Qt::TextAlignmentRole){
-        return item.column()==3 ? int(Qt::AlignRight | Qt::AlignVCenter) : int(Qt::AlignLeft | Qt::AlignVCenter);
+        return item.column()==4 ? int(Qt::AlignRight | Qt::AlignVCenter) : int(Qt::AlignLeft | Qt::AlignVCenter);
     }
     return QSqlQueryModel::data(item,role);
 }

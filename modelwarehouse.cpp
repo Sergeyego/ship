@@ -170,7 +170,7 @@ ModelShipment::ModelShipment(QObject *parent):
 
 QVariant ModelShipment::data(const QModelIndex &item, int role) const
 {
-    if (item.column()==3){
+    if (item.column()==4){
         if (role==Qt::TextAlignmentRole) return int(Qt::AlignRight | Qt::AlignVCenter);
         if (role==Qt::DisplayRole) return QLocale().toString(QSqlQueryModel::data(item,role).toDouble(),'f',2);
     }
@@ -181,9 +181,10 @@ QVariant ModelShipment::data(const QModelIndex &item, int role) const
 
 void ModelShipment::refresh(int id_part, QDate date)
 {
-    setQuery("select s.dat_vid, s.nom_s, p.short, d.m_netto, d.id from wire_shipment_consist as d "
+    setQuery("select s.dat_vid, s.nom_s, p.short, t.nam, d.m_netto, d.id from wire_shipment_consist as d "
              "inner join sertifikat as s on s.id=d.id_ship "
              "inner join poluch as p on s.id_pol=p.id "
+             "inner join sert_type as t on s.id_type=t.id "
              "where d.id_wparti="+QString::number(id_part)+" and s.dat_vid<='"+date.toString("yyyy-MM-dd")+"' order by s.dat_vid");
     if (lastError().isValid()){
         QMessageBox::critical(NULL,"Error",lastError().text(),QMessageBox::Cancel);
@@ -191,7 +192,8 @@ void ModelShipment::refresh(int id_part, QDate date)
         setHeaderData(0, Qt::Horizontal,tr("Дата"));
         setHeaderData(1, Qt::Horizontal,tr("№"));
         setHeaderData(2, Qt::Horizontal,tr("Получатель"));
-        setHeaderData(3, Qt::Horizontal,tr("Масса, кг"));
+        setHeaderData(3, Qt::Horizontal,tr("Тип отгрузки"));
+        setHeaderData(4, Qt::Horizontal,tr("Масса, кг"));
     }
     double sum=0;
     for (int i=0; i<rowCount(); i++){

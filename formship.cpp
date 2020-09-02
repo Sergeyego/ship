@@ -24,12 +24,14 @@ FormShip::FormShip(bool readonly, QWidget *parent) :
     ui->tableViewShip->setColumnWidth(1,55);
     ui->tableViewShip->setColumnWidth(2,70);
     ui->tableViewShip->setColumnWidth(3,350);
+    ui->tableViewShip->setColumnHidden(4,true);
 
     push = new DbMapper(ui->tableViewShip,this);
     ui->horizontalLayoutPush->insertWidget(0,push);
     push->addMapping(ui->lineEditNum,1);
     push->addMapping(ui->dateEdit,2);
     push->addMapping(ui->comboBoxPol,3);
+    push->addMapping(ui->comboBoxType,4);
     push->setDefaultFocus(3);
     push->addEmptyLock(ui->groupBoxEl);
     push->addEmptyLock(ui->groupBoxWire);

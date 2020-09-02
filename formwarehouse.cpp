@@ -21,7 +21,7 @@ FormWarehouse::FormWarehouse(QWidget *parent) :
     modelShip = new ModelShipment(this);
     ui->tableViewShip->verticalHeader()->setDefaultSectionSize(ui->tableViewShip->verticalHeader()->fontMetrics().height()*1.5);
     ui->tableViewShip->setModel(modelShip);
-    ui->tableViewShip->setColumnHidden(4,true);
+    ui->tableViewShip->setColumnHidden(5,true);
 
     modelWar=new ModelWarehouse(this);
     modelWar->setDate(ui->dateEdit->date());

@@ -6,7 +6,9 @@ ModelShip::ModelShip(QObject *parent) : DbTableModel("sertifikat",parent)
     addColumn("nom_s",tr("Номер"),false,TYPE_STRING);
     addColumn("dat_vid",tr("Дата"),false,TYPE_DATE);
     addColumn("id_pol",tr("Получатель"),false,TYPE_STRING,NULL,Models::instance()->relPol);
+    addColumn("id_type",tr("Тип отгрузки"),false,TYPE_STRING,NULL,Models::instance()->relShipType);
     setSort("sertifikat.dat_vid, sertifikat.nom_s");
+    setDefaultValue(4,1);
 }
 
 void ModelShip::refresh(QDate beg, QDate end, int id_pol)
