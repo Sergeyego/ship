@@ -14,9 +14,10 @@ Models::Models(QObject *parent) :
                                                        "inner join wire_pack_kind as k on k.id=p.id_pack "
                                                        "inner join wire_pack as t on t.id=p.id_pack_type "
                                                        "order by part desc",this),0,1,this);
-    relElPart = new DbRelation(new DbRelationalModel("select p.id, p.n_s||' '||cast(p.dat_part as varchar(96))||' '||e.marka||' "+tr("ф")+"'||p.diam as str, "
+    relElPart = new DbRelation(new DbRelationalModel("select p.id, p.n_s||' '||cast(p.dat_part as varchar(96))||' '||e.marka||' "+tr("ф")+"'||p.diam || ' ('||ep.pack_ed||')' as str, "
                                                      "date_part('year',p.dat_part) "
                                                      "from parti p "
+                                                     "inner join el_pack ep on ep.id=p.id_pack "
                                                      "inner join elrtr e on e.id=p.id_el order by str desc",this),0,1,this);
     relEl = new DbRelation(new DbRelationalModel("select id, marka from elrtr order by marka",this),0,1,this);
 

@@ -175,11 +175,12 @@ void ModelPresenceEl::refresh()
     QString query;
     QString strDate=date.toString("yyyy-MM-dd");
     if (bypart){
-        query=("select e.marka, p.diam, p.n_s, cast(date_part('year',p.dat_part) as integer), i.nam, n.nam, c.kvo "
+        query=("select e.marka, p.diam, ep.pack_ed, p.n_s, cast(date_part('year',p.dat_part) as integer), i.nam, n.nam, p.prim_prod, c.kvo "
                "from calc_parti_new('"+strDate+"') as c "
                "inner join parti as p on c.id_part=p.id "
                "inner join elrtr as e on p.id_el=e.id "
                "inner join istoch as i on p.id_ist=i.id "
+               "inner join el_pack as ep on ep.id=p.id_pack "
                "left join rcp_nam as n on p.id_rcp=n.id "
                "where kvo<>0 order by e.marka, p.diam, p.n_s, p.dat_part");
     } else {
@@ -196,7 +197,7 @@ void ModelPresenceEl::refresh()
     QModelIndex ind=index(row,0);
     setData(ind,QString("Итого"),Qt::EditRole);
     double sum=0.0;
-    const int col = bypart? 6 : 2;
+    const int col = columnCount()-1;
     for (int i=0; i<ModelPrg::rowCount(); i++){
         QModelIndex cs=index(i,col);
         sum+=ModelPrg::data(cs,Qt::EditRole).toDouble();
@@ -218,7 +219,7 @@ QVariant ModelPresenceEl::headerData(int section, Qt::Orientation orientation, i
 {
     QStringList headers;
     if (currentByPart){
-        headers<<tr("Марка")<<tr("Диам.")<<tr("Партия")<<tr("Год")<<tr("Источник")<<tr("Рецептура")<<tr("Кол-во, кг");
+        headers<<tr("Марка")<<tr("Диам.")<<tr("Упаковка")<<tr("Партия")<<tr("Год")<<tr("Источник")<<tr("Рецептура")<<tr("Комментарий")<<tr("Кол-во, кг");
     } else {
         headers<<tr("Марка")<<tr("Диам.")<<tr("Кол-во, кг");
     }

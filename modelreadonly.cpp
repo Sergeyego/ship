@@ -28,9 +28,10 @@ void ModelPartEl::refresh()
     }
     if (!flt.isEmpty()) flt="where "+flt;
     QString query;
-    query=("select p.id, p.n_s||'-'||date_part('year',p.dat_part) as part, e.marka, p.diam, i.nam, c.kvo "
+    query=("select p.id, p.n_s||'-'||date_part('year',p.dat_part) as part, e.marka, p.diam, ep.pack_ed, i.nam, c.kvo "
            "from calc_parti_new('"+date.toString("yyyy-MM-dd")+"') as c "
            "inner join parti as p on c.id_part=p.id "
+           "inner join el_pack as ep on ep.id=p.id_pack "
            "inner join elrtr as e on p.id_el=e.id "
            "inner join istoch as i on p.id_ist=i.id "
            +flt+"order by p.n_s, p.dat_part");
@@ -40,7 +41,7 @@ void ModelPartEl::refresh()
 QVariant ModelPartEl::data(const QModelIndex &item, int role) const
 {
     if (role==Qt::BackgroundColorRole){
-        double val=ModelPrg::data(index(item.row(),5),Qt::EditRole).toDouble();
+        double val=ModelPrg::data(index(item.row(),columnCount()-1),Qt::EditRole).toDouble();
         if (val<0.0) return QVariant(QColor(255,170,170));
         if (val>0.0) return QVariant(QColor(170,255,170));
     }
@@ -50,7 +51,7 @@ QVariant ModelPartEl::data(const QModelIndex &item, int role) const
 QVariant ModelPartEl::headerData(int section, Qt::Orientation orientation, int role) const
 {
     QStringList headers;
-    headers<<tr("id")<<tr("Партия")<<tr("Марка")<<tr("ф")<<tr("Источник")<<tr("Наличие, кг");
+    headers<<tr("id")<<tr("Партия")<<tr("Марка")<<tr("ф")<<tr("Упаковка")<<tr("Источник")<<tr("Наличие, кг");
 
     if (orientation == Qt::Horizontal && (role == Qt::DisplayRole || role == Qt::EditRole)) {
         return (headers.size()>section && section>=0)? headers.at(section) : ModelPrg::headerData(section, orientation, role);
