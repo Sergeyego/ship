@@ -15,15 +15,15 @@ void TableView::resizeToContents()
     int max=0;
     QStringList l;
     QString s;
-    /*for (int i=0; i<model()->rowCount(); i++){
+    for (int i=0; i<model()->rowCount(); i++){
         max=1;
         for (int j=0; j<n; j++){
             s=model()->data(model()->index(i,j)).toString();
             l=s.split("\n");
             if (max<l.size()) max=l.size();
         }
-        setRowHeight(i,max*ui->tableView->fontMetrics().height()+12);
-    }*/
+        setRowHeight(i,max*verticalHeader()->fontMetrics().height()*1.5);
+    }
     for (int i=0; i<n; i++){
         s=model()->headerData(i,Qt::Horizontal).toString();
         l=s.split("\n");
@@ -40,6 +40,7 @@ void TableView::resizeToContents()
                     max=fontMetrics().width(l.at(k));
             }
         }
+        if (max>250) max=250;
         setColumnWidth(i,max+12);
     }
 }

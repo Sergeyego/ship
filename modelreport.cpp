@@ -184,11 +184,12 @@ void ModelPresenceEl::refresh()
                "left join rcp_nam as n on p.id_rcp=n.id "
                "where kvo<>0 order by e.marka, p.diam, p.n_s, p.dat_part");
     } else {
-        query=("select e.marka, p.diam, sum(c.kvo) "
+        query=("select e.marka, p.diam, ep.pack_ed, sum(c.kvo) "
                "from calc_parti_new('"+strDate+"') as c "
                "inner join parti as p on c.id_part=p.id "
                "inner join elrtr as e on p.id_el=e.id "
-               "where kvo<>0 group by e.marka, p.diam order by e.marka, p.diam");
+               "inner join el_pack as ep on ep.id=p.id_pack "
+               "where kvo<>0 group by e.marka, p.diam, ep.pack_ed order by e.marka, p.diam, ep.pack_ed");
     }
     loadData(query);
     currentByPart=bypart;
@@ -221,7 +222,7 @@ QVariant ModelPresenceEl::headerData(int section, Qt::Orientation orientation, i
     if (currentByPart){
         headers<<tr("Марка")<<tr("Диам.")<<tr("Упаковка")<<tr("Партия")<<tr("Год")<<tr("Источник")<<tr("Рецептура")<<tr("Комментарий")<<tr("Кол-во, кг");
     } else {
-        headers<<tr("Марка")<<tr("Диам.")<<tr("Кол-во, кг");
+        headers<<tr("Марка")<<tr("Диам.")<<tr("Упаковка")<<tr("Кол-во, кг");
     }
     if (orientation == Qt::Horizontal && (role == Qt::DisplayRole || role == Qt::EditRole)) {
         return (headers.size()>section && section>=0)? headers.at(section) : ModelPrg::headerData(section, orientation, role);
