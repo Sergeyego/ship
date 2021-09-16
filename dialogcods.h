@@ -25,6 +25,7 @@ private:
     DbRelation *relWire;
     DbRelation *relSpool;
     DbRelation *relPack;
+    DbRelation *relElPack;
 };
 
 #endif // DIALOGCODS_H

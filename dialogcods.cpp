@@ -7,9 +7,11 @@ DialogCods::DialogCods(QWidget *parent) :
 {
     ui->setupUi(this);
     relDiam = new DbRelation(new DbRelationalModel("select id, sdim from diam order by sdim",this),0,1,this);
+    relElPack = new DbRelation(new DbRelationalModel("select id, pack_ed||'/'||pack_group from el_pack order by pack_ed",this),0,1,this);
     modelElCods = new DbTableModel("td_keys_el",this);
     modelElCods->addColumn("id_el",tr("Марка"),true,TYPE_STRING,NULL,Models::instance()->relEl);
     modelElCods->addColumn("id_diam",tr("Диаметр"),true,TYPE_STRING,NULL,relDiam);
+    modelElCods->addColumn("id_pack",tr("Упаковка (ед./групп.)"),true,TYPE_STRING,NULL,relElPack);
     modelElCods->addColumn("cod",tr("Код"),false,TYPE_STRING);
     modelElCods->setSuffix("inner join elrtr on elrtr.id = td_keys_el.id_el inner join diam on diam.id = td_keys_el.id_diam");
     modelElCods->setSort("elrtr.marka, diam.sdim");
@@ -17,7 +19,8 @@ DialogCods::DialogCods(QWidget *parent) :
     ui->tableViewEl->setModel(modelElCods);
     ui->tableViewEl->setColumnWidth(0,180);
     ui->tableViewEl->setColumnWidth(1,100);
-    ui->tableViewEl->setColumnWidth(2,100);
+    ui->tableViewEl->setColumnWidth(2,210);
+    ui->tableViewEl->setColumnWidth(3,100);
 
     relWire = new DbRelation(new DbRelationalModel("select id, nam from provol order by nam",this),0,1,this);
     relSpool = new DbRelation(new DbRelationalModel("select id, short from wire_pack_kind order by short",this),0,1,this);

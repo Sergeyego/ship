@@ -127,7 +127,7 @@ void ModelShipEl::refreshState()
                   "case when exists(select id_mech from sert_mech where id_part=otpusk.id_part) "
                   "then 2 else 0 end "
                   "+ "
-                  "case when exists(select cod from td_keys_el where id_el=(select id_el from parti where id=otpusk.id_part) and id_diam=(select id from diam as d where d.diam=(select diam from parti where id=otpusk.id_part)) ) "
+                  "case when exists(select cod from td_keys_el where id_el=(select id_el from parti where id=otpusk.id_part) and id_diam=(select id from diam as d where d.diam=(select diam from parti where id=otpusk.id_part)) and id_pack=(select id_pack from parti where id=otpusk.id_part)) "
                   "then 4 else 0 end "
                   "as r) from otpusk where otpusk.id_sert = :id ");
     query.bindValue(":id",currentIdShip);

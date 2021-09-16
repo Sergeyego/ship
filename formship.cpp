@@ -202,7 +202,7 @@ void FormShip::goXml()
                                                  "inner join parti p on o.id_part=p.id "
                                                  "inner join elrtr e on p.id_el=e.id "
                                                  "inner join diam d on d.diam=p.diam "
-                                                 "left outer join td_keys_el as ke on ke.id_el=p.id_el and ke.id_diam=d.id "
+                                                 "left outer join td_keys_el as ke on ke.id_el=p.id_el and ke.id_diam=d.id and ke.id_pack=p.id_pack "
                                                  "where o.id_sert= :id_sert "
                                                  "group by e.marka, d.sdim, ke.cod "
                                                  "order by e.marka, d.sdim");
