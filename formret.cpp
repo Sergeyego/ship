@@ -13,7 +13,7 @@ FormRet::FormRet(bool readonly, QWidget *parent) :
     ui->dateEditBeg->setDate(QDate::currentDate().addDays(-QDate::currentDate().dayOfYear()+1));
     ui->dateEditEnd->setDate(QDate::currentDate());
 
-    modelType = new DbRelationalModel("select id, nam from prod_nakl_tip where id in (1,4,5,11) order by nam",this);
+    modelType = new DbRelationalModel("select id, nam from prod_nakl_tip where id in (1,4,5,9,11) order by nam",this);
     ui->comboBoxType->setModel(modelType);
     ui->comboBoxType->setModelColumn(1);
 
